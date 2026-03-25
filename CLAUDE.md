@@ -60,3 +60,15 @@ Both servers must run together. Frontend expects backend at `http://localhost:30
 **CORS** is locked to `http://localhost:5173`. If testing from a different origin, update `server.js`.
 
 **No 404 on empty task list** — `GET /tasks/user/:uid` returns `[]` when no tasks found (not a 404).
+
+## Rules
+
+Never initialize git repos, create .env files, or make infrastructure changes unless explicitly asked. Only modify files directly related to the request.
+
+## Testing / Verification
+
+After any migration or refactor (e.g., JS to TS), always verify the server starts and key endpoints respond before reporting completion. Run `npm run dev` or equivalent and check for errors.
+
+## Code Style
+
+This project uses TypeScript for both frontend and backend. All new files should be .ts/.tsx. Use strict typing — avoid `any` unless absolutely necessary.
