@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { setDraftNote } from '../store/taskSlice'
 import type { Task } from '../store/taskSlice'
+import ModalPortal from './ModalPortal'
 
 const MAX_WORDS = 200
 
@@ -28,8 +29,9 @@ export default function TaskDetailModal({ task, onSave, onCancel, onClose }: Pro
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 space-y-5 relative">
+    <ModalPortal>
+    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/50 w-full max-w-lg p-6 space-y-5 relative">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -97,5 +99,6 @@ export default function TaskDetailModal({ task, onSave, onCancel, onClose }: Pro
         </div>
       </div>
     </div>
+    </ModalPortal>
   )
 }

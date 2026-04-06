@@ -3,8 +3,9 @@
   "configurations": [
     {
       "name": "Frontend (Vite)",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/Users/cygbitdeveloper/.nvm/versions/node/v24.14.0/bin/node",
+      "runtimeArgs": ["/Volumes/ExtendedSSD/TaskManager/task-manager-frontend/node_modules/vite/bin/vite.js"],
+      "cwd": "/Volumes/ExtendedSSD/TaskManager/task-manager-frontend",
       "port": 5173
     },
     {

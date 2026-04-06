@@ -8,7 +8,20 @@
       "Bash(curl -s -X POST http://localhost:3000/users/login -H \"Content-Type: application/json\" -d '{\"\"\"\"email\"\"\"\":\"\"\"\"test@example.com\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"password123\"\"\"\"}')",
       "Skill(update-config)",
       "Skill(update-config:*)",
-      "Bash(jq -e '.hooks.PostToolUse[] | select\\(.matcher == \"\"Write|Edit\"\"\\) | .hooks[] | select\\(.type == \"\"command\"\"\\) | .command' /Volumes/ExtendedSSD/TaskManager/task-manager-frontend/.claude/settings.json)"
+      "Bash(jq -e '.hooks.PostToolUse[] | select\\(.matcher == \"\"Write|Edit\"\"\\) | .hooks[] | select\\(.type == \"\"command\"\"\\) | .command' /Volumes/ExtendedSSD/TaskManager/task-manager-frontend/.claude/settings.json)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(/Users/cygbitdeveloper/.nvm/versions/node/v22.14.0/bin/node ./node_modules/.bin/tsc --noEmit)",
+      "Bash(npm run:*)",
+      "Bash(/usr/local/bin/npm run:*)",
+      "Read(//usr/local/bin/**)",
+      "Read(//Users/cygbitdeveloper/.nvm/versions/node/**)",
+      "Bash(ls /usr/local/bin/npm*)",
+      "Read(//opt/homebrew/lib/node_modules/npm/bin/**)",
+      "Bash(/opt/homebrew/bin/npm run:*)",
+      "Bash(~/.nvm/versions/node/v22.14.0/bin/npm run:*)",
+      "Bash(~/.nvm/versions/node/v22.14.0/bin/node --version)",
+      "Bash(~/.nvm/versions/node/v22.14.0/bin/node ~/.nvm/versions/node/v22.14.0/bin/npm run build)",
+      "Bash(PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\" npm run build)"
     ]
   }
 }
