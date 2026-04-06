@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { loginUser, clearError } from '../store/authSlice'
+import { loginUser, clearError, logout } from '../store/authSlice'
 import AuthLayout from '../components/AuthLayout'
+import RoleToggle from '../components/RoleToggle'
 
 const LoginSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -19,6 +20,8 @@ export default function LoginPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { loading, error } = useAppSelector((state) => state.auth)
+  const [role, setRole] = useState<'user' | 'admin'>('user')
+  const [roleError, setRoleError] = useState<string | null>(null)
 
   useEffect(() => {
     return () => {
@@ -28,13 +31,24 @@ export default function LoginPage() {
 
   return (
     <AuthLayout title="Welcome Back">
+      <RoleToggle value={role} onChange={(r) => { setRole(r); setRoleError(null) }} />
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            await dispatch(loginUser({ email: values.email, password: values.password }))
-            navigate('/')
+            setRoleError(null)
+            const user = await dispatch(loginUser({ email: values.email, password: values.password }))
+            if (user.role !== role) {
+              dispatch(logout())
+              setRoleError(
+                role === 'admin'
+                  ? 'This account does not have admin access.'
+                  : 'Please use the Admin login for this account.'
+              )
+              return
+            }
+            navigate(user.role === 'admin' ? '/admin' : '/')
           } catch {
             // error shown via Redux state
           } finally {
@@ -44,20 +58,24 @@ export default function LoginPage() {
       >
         {({ isSubmitting }) => (
           <Form className="space-y-4">
-            {error && (
+            {(error || roleError) && (
               <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">
-                {error}
+                {roleError || error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {role === 'admin' ? 'Admin Email' : 'Email'}
+              </label>
               <Field type="email" name="email" placeholder="john@example.com" className={fieldClass} />
               <ErrorMessage name="email" component="p" className={errorClass} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {role === 'admin' ? 'Admin Password' : 'Password'}
+              </label>
               <Field type="password" name="password" placeholder="Your password" className={fieldClass} />
               <ErrorMessage name="password" component="p" className={errorClass} />
             </div>

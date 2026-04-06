@@ -1,1 +1,103 @@
 @import "tailwindcss";
+
+/* ── Page entrance animation ─────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+/* ── Header title shimmer ────────────────────────────────────────── */
+@keyframes shimmerSlide {
+  0%   { transform: translateX(-100%); opacity: 0.8; }
+  100% { transform: translateX(400%);  opacity: 0; }
+}
+
+.title-shimmer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.title-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation: shimmerSlide 1.2s ease-in-out 1 forwards;
+  pointer-events: none;
+}
+
+/* ── Button border-sweep on hover ────────────────────────────────── */
+@property --sweep-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes sweepBorder {
+  from { --sweep-angle: 0deg; }
+  to   { --sweep-angle: 360deg; }
+}
+
+/* Default sweep: blue → indigo */
+button:not(.no-sweep) {
+  position: relative;
+  --sweep-start: #3b82f6;
+  --sweep-end:   #818cf8;
+}
+
+/* Red sweep — logout / danger buttons (have "red" anywhere in class) */
+button:not(.no-sweep)[class*="red"] {
+  --sweep-start: #fca5a5;
+  --sweep-end:   #ef4444;
+}
+
+/* Green sweep — save / success buttons */
+button:not(.no-sweep)[class*="green"] {
+  --sweep-start: #6ee7b7;
+  --sweep-end:   #22c55e;
+}
+
+button:not(.no-sweep)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid transparent;
+  background:
+    conic-gradient(
+      from -90deg,
+      var(--sweep-start),
+      var(--sweep-end) var(--sweep-angle),
+      transparent var(--sweep-angle)
+    )
+    border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+button:not(.no-sweep):hover::after {
+  opacity: 1;
+  animation: sweepBorder 0.65s linear forwards;
+}
+
+/* ── Modal background blur ───────────────────────────────────────── */
+#root.modal-blur {
+  filter: blur(6px);
+  pointer-events: none;
+  transition: filter 0.15s ease;
+}
